@@ -2,4 +2,4 @@ openai
 requests
 flask
 python-dotenv
-pybybit
+bybit==0.2.11
