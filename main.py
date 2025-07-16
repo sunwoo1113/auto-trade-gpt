@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from config import WEBHOOK_SECRET
-from trade_executor import execute_trade
+from utils.trade_executor import execute_trade
 from utils.snapshot import save_snapshot
 from utils.firebase import upload_trade_snapshot
 
