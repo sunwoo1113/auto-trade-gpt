@@ -1,5 +1,3 @@
-# utils/snapshot.py
-
 import json
 import os
 from datetime import datetime
@@ -14,9 +12,9 @@ def save_snapshot_from_text(json_text: str, image_path: str = None):
     try:
         data = json.loads(json_text)
         if image_path:
-            data["이미지"] = image_path
+            data["image"] = image_path
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
-        print(f"📸 스냅샷 저장됨: {filename}")
+        print(f"📸 Snapshot saved: {filename}")
     except Exception as e:
-        print(f"❌ 스냅샷 실패: {e}")
+        print(f"❌ Snapshot save failed: {e}")
