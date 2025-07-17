@@ -1,9 +1,14 @@
 from flask import Flask, request, jsonify
-from config import WEBHOOK_SECRET
-from gpt_logic import decide_trade
-from utils.trade_executor import execute_trade
-from utils.snapshot import save_snapshot_from_text
+from dotenv import load_dotenv
+import os
 import json
+
+from gpt_logic import gpt_trade_executor
+from utils.snapshot import save_snapshot_from_text
+
+# 초기 설정
+load_dotenv()
+WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET")
 
 app = Flask(__name__)
 
@@ -16,23 +21,17 @@ def webhook():
     if not data or data.get("secret") != WEBHOOK_SECRET:
         return jsonify({"error": "Invalid secret"}), 403
 
-    # 2. GPT 판단 로직에 JSON 전체 전달 (text로 변환 가능)
+    # 2. 스냅샷 저장 (로깅)
     json_text = json.dumps(data, ensure_ascii=False)
-    gpt_signal = decide_trade(data)
-    if not gpt_signal:
-        return jsonify({"error": "GPT 판단 실패"}), 400
-
-    symbol = data.get("symbol", "BTCUSDT")
-    qty = float(data.get("qty", 0.01))
-
-    # 3. Bybit 매매 실행
-    result = execute_trade(signal=gpt_signal, symbol=symbol, qty=qty)
-
-    # 4. 스냅샷 저장 (수신된 전체 JSON 문자열 저장)
     save_snapshot_from_text(json_text=json_text)
 
-    return jsonify(result)
-
+    # 3. GPT 기반 판단 및 자동 매매 실행
+    try:
+        gpt_trade_executor(data)
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(port=8000, debug=True)
+    port = int(os.getenv("PORT", 8000))
+    app.run(host="0.0.0.0", port=port)
