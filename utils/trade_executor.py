@@ -10,12 +10,11 @@ BYBIT_TESTNET = os.getenv("BYBIT_TESTNET", "true").lower() == "true"
 BYBIT_SYMBOL = os.getenv("BYBIT_SYMBOL", "BTCUSDT")
 
 # Bybit 클라이언트 생성
-client = bybit.bybit(  # ✅ 수정: 'Bybit(...)' → 'bybit.bybit(...)'
-    test=BYBIT_TESTNET,
-    api_key=BYBIT_API_KEY,
-    api_secret=BYBIT_SECRET
+client = HTTP(
+    api_key=os.getenv("BYBIT_API_KEY"),
+    api_secret=os.getenv("BYBIT_SECRET"),
+    testnet=os.getenv("BYBIT_TESTNET", "true").lower() == "true"
 )
-
 
 def setup_leverage_and_margin(symbol: str, leverage: int = 1, mode: str = "Isolated"):
     """
@@ -88,3 +87,4 @@ def get_open_position(symbol: str):
             return {"status": "closed"}
     except Exception as e:
         return {"status": "error", "message": str(e)}
+ 
