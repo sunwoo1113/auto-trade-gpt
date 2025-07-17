@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from bybit import Bybit
+import bybit  # ✅ 수정: 'from bybit import Bybit' → 'import bybit'
 
 # 환경 변수 로딩
 load_dotenv()
@@ -10,11 +10,12 @@ BYBIT_TESTNET = os.getenv("BYBIT_TESTNET", "true").lower() == "true"
 BYBIT_SYMBOL = os.getenv("BYBIT_SYMBOL", "BTCUSDT")
 
 # Bybit 클라이언트 생성
-client = Bybit(
-    testnet=BYBIT_TESTNET,
+client = bybit.bybit(  # ✅ 수정: 'Bybit(...)' → 'bybit.bybit(...)'
+    test=BYBIT_TESTNET,
     api_key=BYBIT_API_KEY,
     api_secret=BYBIT_SECRET
 )
+
 
 def setup_leverage_and_margin(symbol: str, leverage: int = 1, mode: str = "Isolated"):
     """
