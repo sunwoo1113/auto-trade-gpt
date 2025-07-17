@@ -4,5 +4,5 @@ six==1.16.0
 flask
 python-dotenv
 firebase-admin
-pybit==3.3.0
+pybit==5.11.0
 uvicorn[standard]
