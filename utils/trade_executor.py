@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-import bybit  # ✅ 수정: 'from bybit import Bybit' → 'import bybit'
+from pybit.unified_trading import HTTP
 
 # 환경 변수 로딩
 load_dotenv()
