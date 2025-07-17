@@ -1,9 +1,9 @@
 openai
-requests==2.27.1
-urllib3==1.26.8
+requests==2.31.0
+urllib3==1.26.18
 six==1.16.0
 flask
 python-dotenv
 firebase-admin
-bybit==0.2.11
+bybit==0.2.12
 uvicorn[standard]
